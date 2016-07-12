@@ -30,12 +30,17 @@ function listar($tableName,$conexion,$option=NULL){
 function buscar($tableName,$conexion,$datos=''){
 	$lineas=null;
 	if($datos[1]==0){
-		$opciones= $datos[2];
+		/*$tmp = explode(" LIKE ", $datos[2]);
+		if(count($tmp>1)){
+			var_dump($tmp);
+		} ALERTA SPOILER SE VIENE NEGRAAAAAASS*/
+		$opciones= verifica($datos[2]);
 		$offset = null;
 		$limit = null;
 		$slq="SELECT * FROM $tableName where $opciones";
 		//echo $slq;
 		$result = $conexion->Execute($slq);
+		//var_dump($conexion->ErrorMsg());
 	}else{
 			//echo"else IF <br>";
 			$offset = $datos[0];
@@ -89,7 +94,7 @@ function getRowName($tableName,$conexion)
   }
  function categorias($tabla,$conexion,$opciones)
  {
- 	 $sap =$opciones[2];	
+ 	 $sap =$opciones[2];
      $sql="select * from $tabla where sap='$sap'";
      $resultado=$conexion->Execute($sql);
 	 if($resultado->RowCount()==1){
@@ -98,5 +103,33 @@ function getRowName($tableName,$conexion)
 	 }else{
 	 	return array("Estatus"=>"ERROR","TYPE"=>"opciones de busqueda incorrectas","tabla"=>$tabla,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>null,"index"=>$offset=null,"limit"=>$limit=null);
 	 }
+ }
+ function insertar($tabla,$conexion,$opciones)
+ {
+ 	/* Los datos se envian en opciones siendo la secuencia la siguiente 
+	 * 0/0/(puesto para retrocompatibilidad con las otras funciones)
+	 * PrimerValor(sap)||
+	 * SegundoValor(codigoBarras||cantidad)||
+	 * TercerValor(ubicacion string ejemplo 'netacom')||
+	 * CuartoValor (informacion (string (60)))
+	 * esta claro que para poder insertar en la tabla productos debe ser usuario*/
+ 	 $limpio=$opciones[2];
+     $datos[]= explode('||', $limpio);
+	 $sap=verifica($datos[0][0]);
+	 $codigoBarras=verifica($datos[0][1]);
+	 $userid= verifica($_SESSION['iduser']);
+	 $ubicacion =verifica($datos[0][2]);
+	 $informacion=verifica($datos[0][3]);
+     $sql="CALL insertarp ('$sap','$codigoBarras','$userid','$ubicacion','$informacion');";
+	 $resultado=$conexion->Execute($sql);
+	 var_dump($resultado);
+ }
+ function verifica($cadena){
+ 	$regular="/[-'@+]/";
+	if(preg_match($regular, $cadena)){
+		return 'FALSE';
+	}else{
+		return $cadena;
+	}
  }
 ?>

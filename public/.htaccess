@@ -1,0 +1,2 @@
+#RewriteEngine On
+#RewriteRule ^/([a-zA-Z_]+)/([a-zA-Z])$ /public/ajax.php?operacion=$1&tabla=$2 [L,NC]

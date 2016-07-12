@@ -2,11 +2,6 @@
 /*Este archovo contiene todo lo necesario para realizar las consultas que se realizen por javascript desde el navegador del usuario
  * todo lo envia codeado en json*/
 include '../core/core.php';
-/*$driver = "mysqli";
-$host="localhost";
-$user="root";
-$pass="12341234";
-$BaseDatos="inventorya";*/
 $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
 error_reporting(E_ALL);
 //$ADODB_CACHE_DIR = 'c:/tmp/';
@@ -60,16 +55,4 @@ if((isset($_POST['operacion']) && isset($_POST['tabla']))||(isset($_GET['operaci
 	}
 }
 
- function insertar($tabla,$conexion,$opciones){
- 	switch ($tabla) {
-		 case 'vista_productos':
-			 $sql=" ";
-			 break;
-		 
-		 default:
-			 
-			 break;
-	 }
- 	$sql ="insert into $tabla ($campos)";
- }
 ?>

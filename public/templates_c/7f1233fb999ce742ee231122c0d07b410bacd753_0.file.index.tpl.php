@@ -1,3 +1,26 @@
+<?php
+/* Smarty version 3.1.29, created on 2016-07-11 21:40:43
+  from "C:\workspace\Inventorya\public\templates\index.tpl" */
+
+if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
+  'has_nocache_code' => false,
+  'version' => '3.1.29',
+  'unifunc' => 'content_5783f63b7ea164_12679549',
+  'file_dependency' => 
+  array (
+    '7f1233fb999ce742ee231122c0d07b410bacd753' => 
+    array (
+      0 => 'C:\\workspace\\Inventorya\\public\\templates\\index.tpl',
+      1 => 1468266038,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5783f63b7ea164_12679549 ($_smarty_tpl) {
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -11,10 +34,16 @@
 		<meta name="Invertorya" content="">
 		<meta name="Luis" content="luis@pipservice.com.ar">
 
-		<script   src="js/jquery-1.12.4.min.js" ></script>
+		<?php echo '<script'; ?>
+   src="js/jquery-1.12.4.min.js" ><?php echo '</script'; ?>
+>
 		<link href="css/bootstrap-slate.min.css" rel="stylesheet" >
-		<script src="js/bootstrap.min.js" ></script>
-		<script src="js/index.js" ></script>
+		<?php echo '<script'; ?>
+ src="js/bootstrap.min.js" ><?php echo '</script'; ?>
+>
+		<?php echo '<script'; ?>
+ src="js/index.js" ><?php echo '</script'; ?>
+>
 	</head>
 
 	<body>
@@ -162,3 +191,5 @@
 		
 	</body>
 </html>
+<?php }
+}

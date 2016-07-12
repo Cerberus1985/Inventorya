@@ -1,3 +1,26 @@
+<?php
+/* Smarty version 3.1.29, created on 2016-07-06 19:55:26
+  from "C:\workspace\Inventorya\public\templates\login.tpl" */
+
+if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
+  'has_nocache_code' => false,
+  'version' => '3.1.29',
+  'unifunc' => 'content_577d460e104c89_65224995',
+  'file_dependency' => 
+  array (
+    'a442cdf6601d71401f30c7953cf08094bfc87927' => 
+    array (
+      0 => 'C:\\workspace\\Inventorya\\public\\templates\\login.tpl',
+      1 => 1467749516,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_577d460e104c89_65224995 ($_smarty_tpl) {
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -11,12 +34,22 @@
 		<meta name="Invertorya" content="">
 		<meta name="Luis" content="luis@pipservice.com.ar">
 
-		<script   src="js/jquery-1.12.4.min.js" ></script>
-		<script src="js/jquery.validate.min.js"></script>
-		<script src="js/messages_es_AR.min.js"></script>
+		<?php echo '<script'; ?>
+   src="js/jquery-1.12.4.min.js" ><?php echo '</script'; ?>
+>
+		<?php echo '<script'; ?>
+ src="js/jquery.validate.min.js"><?php echo '</script'; ?>
+>
+		<?php echo '<script'; ?>
+ src="js/messages_es_AR.min.js"><?php echo '</script'; ?>
+>
 		<link href="css/bootstrap-slate.min.css" rel="stylesheet" >
-		<script src="js/bootstrap.min.js" ></script>
-		<script src="js/login.js"></script>
+		<?php echo '<script'; ?>
+ src="js/bootstrap.min.js" ><?php echo '</script'; ?>
+>
+		<?php echo '<script'; ?>
+ src="js/login.js"><?php echo '</script'; ?>
+>
 	</head>
 
 	<body>
@@ -53,3 +86,5 @@
 		</div>
 	</body>
 </html>
+<?php }
+}
