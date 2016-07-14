@@ -1,77 +1,74 @@
 <?php
 /**
  * Smarty Internal Plugin Template
- * This file contains the Smarty template engine
+ * This file contains the Smarty template engine.
  *
- * @package    Smarty
- * @subpackage Template
  * @author     Uwe Tews
  */
 
 /**
- * Main class with template data structures and methods
+ * Main class with template data structures and methods.
  *
- * @package    Smarty
- * @subpackage Template
  *
  * @property Smarty_Template_Source|Smarty_Template_Config $source
  * @property Smarty_Template_Compiled                      $compiled
  * @property Smarty_Template_Cached                        $cached
+ *
  * @method bool mustCompile()
  */
 class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
 {
     /**
-     * This object type (Smarty = 1, template = 2, data = 4)
+     * This object type (Smarty = 1, template = 2, data = 4).
      *
      * @var int
      */
     public $_objType = 2;
 
     /**
-     * Global smarty instance
+     * Global smarty instance.
      *
      * @var Smarty
      */
     public $smarty = null;
 
     /**
-     * Source instance
+     * Source instance.
      *
      * @var Smarty_Template_Source|Smarty_Template_Config
      */
     public $source = null;
 
     /**
-     * Template resource
+     * Template resource.
      *
      * @var string
      */
     public $template_resource = null;
 
     /**
-     * flag if compiled template is invalid and must be (re)compiled
+     * flag if compiled template is invalid and must be (re)compiled.
      *
      * @var bool
      */
     public $mustCompile = null;
 
     /**
-     * Template Id
+     * Template Id.
      *
      * @var null|string
      */
     public $templateId = null;
 
     /**
-     * Known template functions
+     * Known template functions.
      *
      * @var array
      */
-    public $tpl_function = array();
+    public $tpl_function = [];
 
     /**
-     * Scope in which template is rendered
+     * Scope in which template is rendered.
      *
      * @var int
      */
@@ -80,7 +77,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     /**
      * Create template data object
      * Some of the global Smarty settings copied to template scope
-     * It load the required template resources and caching plugins
+     * It load the required template resources and caching plugins.
      *
      * @param string                                                  $template_resource template resource string
      * @param Smarty                                                  $smarty            Smarty instance
@@ -113,14 +110,15 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * render template
+     * render template.
      *
-     * @param  bool $merge_tpl_vars   if true parent template variables merged in to local scope
-     * @param  bool $no_output_filter if true do not run output filter
-     * @param  bool $display          true: display, false: fetch null: subtemplate
+     * @param bool $merge_tpl_vars   if true parent template variables merged in to local scope
+     * @param bool $no_output_filter if true do not run output filter
+     * @param bool $display          true: display, false: fetch null: subtemplate
      *
      * @throws Exception
      * @throws SmartyException
+     *
      * @return string rendered template output
      */
     public function render($no_output_filter = true, $display = null)
@@ -180,6 +178,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
                 // debug output
                 $this->smarty->_debug->display_debug($this, true);
             }
+
             return '';
         } else {
             if ($this->smarty->debugging) {
@@ -207,13 +206,13 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
                 return $this->smarty->ext->_filterHandler->runFilter('output', ob_get_clean(), $this);
             }
             // return cache content
-            return null;
+            return;
         }
     }
 
     /**
      * Compiles the template
-     * If the template is not evaluated the compiled template is saved on disk
+     * If the template is not evaluated the compiled template is saved on disk.
      */
     public function compileTemplateSource()
     {
@@ -221,7 +220,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * Writes the content to cache resource
+     * Writes the content to cache resource.
      *
      * @param string $content
      *
@@ -233,7 +232,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * Get unique template id
+     * Get unique template id.
      *
      * @return string
      */
@@ -244,7 +243,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * runtime error not matching capture tags
+     * runtime error not matching capture tags.
      */
     public function capture_error()
     {
@@ -252,8 +251,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * Load compiled object
-     *
+     * Load compiled object.
      */
     public function loadCompiled()
     {
@@ -263,8 +261,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * Load cached object
-     *
+     * Load cached object.
      */
     public function loadCached()
     {
@@ -274,7 +271,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * Load compiler object
+     * Load compiler object.
      *
      * @throws \SmartyException
      */
@@ -289,26 +286,27 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * Handle unknown class methods
+     * Handle unknown class methods.
      *
      * @param string $name unknown method-name
      * @param array  $args argument array
      *
-     * @return mixed
      * @throws SmartyException
+     *
+     * @return mixed
      */
     public function __call($name, $args)
     {
         // method of Smarty object?
         if (method_exists($this->smarty, $name)) {
-            return call_user_func_array(array($this->smarty, $name), $args);
+            return call_user_func_array([$this->smarty, $name], $args);
         }
         // parent
         return parent::__call($name, $args);
     }
 
     /**
-     * set Smarty property in template context
+     * set Smarty property in template context.
      *
      * @param string $property_name property name
      * @param mixed  $value         value
@@ -322,11 +320,13 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
             case 'cached':
             case 'compiler':
                 $this->$property_name = $value;
+
                 return;
             default:
                 // Smarty property ?
                 if (property_exists($this->smarty, $property_name)) {
                     $this->smarty->$property_name = $value;
+
                     return;
                 }
         }
@@ -334,26 +334,30 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * get Smarty property in template context
+     * get Smarty property in template context.
      *
      * @param string $property_name property name
      *
-     * @return mixed|Smarty_Template_Cached
      * @throws SmartyException
+     *
+     * @return mixed|Smarty_Template_Cached
      */
     public function __get($property_name)
     {
         switch ($property_name) {
             case 'compiled':
                 $this->loadCompiled();
+
                 return $this->compiled;
 
             case 'cached':
                 $this->loadCached();
+
                 return $this->cached;
 
             case 'compiler':
                 $this->loadCompiler();
+
                 return $this->compiler;
             default:
                 // Smarty property ?
@@ -365,7 +369,7 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     }
 
     /**
-     * Template data object destructor
+     * Template data object destructor.
      */
     public function __destruct()
     {

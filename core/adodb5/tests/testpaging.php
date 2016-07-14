@@ -14,8 +14,8 @@
 error_reporting(E_ALL);
 
 
-include_once('../adodb.inc.php');
-include_once('../adodb-pager.inc.php');
+include_once '../adodb.inc.php';
+include_once '../adodb-pager.inc.php';
 
 $driver = 'oci8';
 $sql = 'select  ID, firstname as "First Name", lastname as "Last Name" from adoxyz  order  by  id';
@@ -23,41 +23,40 @@ $sql = 'select  ID, firstname as "First Name", lastname as "Last Name" from adox
 //$sql = 'select distinct firstname, lastname from adoxyz  order  by  firstname';
 
 if ($driver == 'postgres') {
-	$db = NewADOConnection('postgres');
-	$db->PConnect('localhost','tester','test','test');
+    $db = NewADOConnection('postgres');
+    $db->PConnect('localhost', 'tester', 'test', 'test');
 }
 
 if ($driver == 'access') {
-	$db = NewADOConnection('access');
-	$db->PConnect("nwind", "", "", "");
+    $db = NewADOConnection('access');
+    $db->PConnect('nwind', '', '', '');
 }
 
 if ($driver == 'ibase') {
-	$db = NewADOConnection('ibase');
-	$db->PConnect("localhost:e:\\firebird\\examples\\employee.gdb", "sysdba", "masterkey", "");
-	$sql = 'select distinct firstname, lastname  from adoxyz  order  by  firstname';
-
+    $db = NewADOConnection('ibase');
+    $db->PConnect('localhost:e:\\firebird\\examples\\employee.gdb', 'sysdba', 'masterkey', '');
+    $sql = 'select distinct firstname, lastname  from adoxyz  order  by  firstname';
 }
 if ($driver == 'mssql') {
-	$db = NewADOConnection('mssql');
-	$db->Connect('JAGUAR\vsdotnet','adodb','natsoft','northwind');
+    $db = NewADOConnection('mssql');
+    $db->Connect('JAGUAR\vsdotnet', 'adodb', 'natsoft', 'northwind');
 }
 if ($driver == 'oci8') {
-	$db = NewADOConnection('oci8');
-	$db->Connect('','scott','natsoft');
+    $db = NewADOConnection('oci8');
+    $db->Connect('', 'scott', 'natsoft');
 
-$sql = "select * from (select  ID, firstname as \"First Name\", lastname as \"Last Name\" from adoxyz
-	 order  by  1)";
+    $sql = 'select * from (select  ID, firstname as "First Name", lastname as "Last Name" from adoxyz
+	 order  by  1)';
 }
 
 if ($driver == 'access') {
-	$db = NewADOConnection('access');
-	$db->Connect('nwind');
+    $db = NewADOConnection('access');
+    $db->Connect('nwind');
 }
 
 if (empty($driver) or $driver == 'mysql') {
-	$db = NewADOConnection('mysql');
-	$db->Connect('localhost','root','','test');
+    $db = NewADOConnection('mysql');
+    $db->Connect('localhost', 'root', '', 'test');
 }
 
 //$db->pageExecuteCountRows = false;
@@ -65,23 +64,23 @@ if (empty($driver) or $driver == 'mysql') {
 $db->debug = true;
 
 if (0) {
-$rs = $db->Execute($sql);
-include_once('../toexport.inc.php');
-print "<pre>";
-print rs2csv($rs); # return a string
+    $rs = $db->Execute($sql);
+    include_once '../toexport.inc.php';
+    echo '<pre>';
+    echo rs2csv($rs); // return a string
 
-print '<hr />';
-$rs->MoveFirst(); # note, some databases do not support MoveFirst
-print rs2tab($rs); # return a string
+echo '<hr />';
+    $rs->MoveFirst(); // note, some databases do not support MoveFirst
+echo rs2tab($rs); // return a string
 
-print '<hr />';
-$rs->MoveFirst();
-rs2tabout($rs); # send to stdout directly
-print "</pre>";
+echo '<hr />';
+    $rs->MoveFirst();
+    rs2tabout($rs); // send to stdout directly
+echo '</pre>';
 }
 
-$pager = new ADODB_Pager($db,$sql);
+$pager = new ADODB_Pager($db, $sql);
 $pager->showPageLinks = true;
 $pager->linksPerPage = 10;
 $pager->cache = 60;
-$pager->Render($rows=7);
+$pager->Render($rows = 7);

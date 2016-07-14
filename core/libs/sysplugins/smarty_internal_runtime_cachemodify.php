@@ -1,20 +1,17 @@
 <?php
 
 /**
- * Inline Runtime Methods render, setSourceByUid, setupSubTemplate
+ * Inline Runtime Methods render, setSourceByUid, setupSubTemplate.
  *
- * @package    Smarty
- * @subpackage PluginsInternal
  * @author     Uwe Tews
- *
  **/
 class Smarty_Internal_Runtime_CacheModify
 {
     /**
-     * check client side cache
+     * check client side cache.
      *
      * @param Smarty_Internal_Template $_template
-     * @param  string                  $content
+     * @param string                   $content
      */
     public function cacheModifiedCheck(Smarty_Template_Cached $cached, Smarty_Internal_Template $_template, $content)
     {
@@ -30,7 +27,7 @@ class Smarty_Internal_Runtime_CacheModify
                     break;
 
                 case 'cli':
-                    if ( /* ^phpunit */
+                    if (/* ^phpunit */
                     !empty($_SERVER['SMARTY_PHPUNIT_DISABLE_HEADERS']) /* phpunit$ */
                     ) {
                         $_SERVER['SMARTY_PHPUNIT_HEADERS'][] = '304 Not Modified';
@@ -38,27 +35,27 @@ class Smarty_Internal_Runtime_CacheModify
                     break;
 
                 default:
-                    if ( /* ^phpunit */
+                    if (/* ^phpunit */
                     !empty($_SERVER['SMARTY_PHPUNIT_DISABLE_HEADERS']) /* phpunit$ */
                     ) {
                         $_SERVER['SMARTY_PHPUNIT_HEADERS'][] = '304 Not Modified';
                     } else {
-                        header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
+                        header($_SERVER['SERVER_PROTOCOL'].' 304 Not Modified');
                     }
                     break;
             }
         } else {
             switch (PHP_SAPI) {
                 case 'cli':
-                    if ( /* ^phpunit */
+                    if (/* ^phpunit */
                     !empty($_SERVER['SMARTY_PHPUNIT_DISABLE_HEADERS']) /* phpunit$ */
                     ) {
                         $_SERVER['SMARTY_PHPUNIT_HEADERS'][] =
-                            'Last-Modified: ' . gmdate('D, d M Y H:i:s', $cached->timestamp) . ' GMT';
+                            'Last-Modified: '.gmdate('D, d M Y H:i:s', $cached->timestamp).' GMT';
                     }
                     break;
                 default:
-                    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $cached->timestamp) . ' GMT');
+                    header('Last-Modified: '.gmdate('D, d M Y H:i:s', $cached->timestamp).' GMT');
                     break;
             }
             echo $content;
