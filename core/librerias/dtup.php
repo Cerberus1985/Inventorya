@@ -37,7 +37,7 @@ function buscar($tableName,$conexion,$datos=''){
 		$opciones= verifica($datos[2]);
 		$offset = null;
 		$limit = null;
-		$slq="SELECT * FROM $tableName where $opciones";
+		$slq="SELECT * FROM $tableName WHERE $opciones;";
 		//echo $slq;
 		$result = $conexion->Execute($slq);
 		//var_dump($conexion->ErrorMsg());
@@ -50,10 +50,10 @@ function buscar($tableName,$conexion,$datos=''){
 			}else{
 				$opciones ="";
 			}
-			$slq="SELECT * FROM $tableName where $opciones";
+			$slq="SELECT * FROM $tableName where $opciones;";
 			$result = $conexion->selectLimit($slq,$limit,$offset);
 	}
-	//var_dump($result);
+
 	if ($result){
 			while(!$result->EOF){
 			$lineas[] = $result->fields;
@@ -78,7 +78,7 @@ function utf8ize($mixed) {
 function getRowName($tableName,$conexion)
   {
   	 $lngCountFields=0;
-  	 $sql= "SELECT * FROM $tableName LIMIT 1";
+  	 $sql= "SELECT * FROM $tableName LIMIT 1;";
   	 $resultado = $conexion->Execute($sql);
 	 if (!$resultado->EOF) {
         for ($i = 0; $i < $resultado->FieldCount(); $i++) {
@@ -92,10 +92,10 @@ function getRowName($tableName,$conexion)
 	 return $aRet;
 	 
   }
- function categorias($tabla,$conexion,$opciones)
+function categorias($tabla,$conexion,$opciones)
  {
  	 $sap =$opciones[2];
-     $sql="select * from $tabla where sap='$sap'";
+     $sql="select * from $tabla where sap='$sap';";
      $resultado=$conexion->Execute($sql);
 	 if($resultado->RowCount()==1){
 	 	$lineas[] = $resultado->fields;
@@ -104,7 +104,7 @@ function getRowName($tableName,$conexion)
 	 	return array("Estatus"=>"ERROR","TYPE"=>"opciones de busqueda incorrectas","tabla"=>$tabla,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>null,"index"=>$offset=null,"limit"=>$limit=null);
 	 }
  }
- function insertar($tabla,$conexion,$opciones)
+function insertar($tabla,$conexion,$opciones)
  {
  	/* Los datos se envian en opciones siendo la secuencia la siguiente 
 	 * 0/0/(puesto para retrocompatibilidad con las otras funciones)
@@ -124,12 +124,58 @@ function getRowName($tableName,$conexion)
 	 $resultado=$conexion->Execute($sql);
 	 var_dump($resultado);
  }
- function verifica($cadena){
- 	$regular="/[-'@+]/";
+function verifica($cadena){
+ 	$regular="/[-@+\\\]/";
 	if(preg_match($regular, $cadena)){
 		return 'FALSE';
 	}else{
 		return $cadena;
 	}
  }
+function checkSerial($tableName,$conexion,$opciones=NULL)
+{
+	$codigo_barra =verifica($opciones[2]);
+	$sql="select * from $tableName where codigo_barra='$codigo_barra';";
+	$resultado=$conexion->Execute($sql);
+	if($resultado->RowCount()==1){
+	 	$lineas[] = $resultado->fields;
+		 return array("Estatus"=>"ERROR","TYPE"=>"El serial esta duplicado","tabla"=>$tableName,"cabezeras"=>getRowName($tableName, $conexion),"cantidadDatos"=>count($lineas),"datos"=>$lineas,"index"=>$offset=null,"limit"=>$limit=null);
+	 }else{
+	 	return array("Estatus"=>"ok","TYPE"=>"Success","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>null,"index"=>$offset=null,"limit"=>$limit=null);
+	 }
+}
+function verificaDebug($cadena){
+	 $regular="/^NT+|^nt+|^Nt+|^nT+/";
+	if(preg_match($regular, $cadena)){
+		return 'FALSE';
+	}else{
+		return $cadena;
+	}
+}
+function checkcantidad($tableName,$conexion,$opciones)
+{	$sap=$opciones[2];
+	$sql="Select cantidad,unidad,nombre from vista_cantidad where sap='$sap';";
+	//echo $sql;
+	$resultado=$conexion->Execute($sql);
+	if($resultado!=null){
+		$lineas[] = $resultado->fields;
+		//var_dump($lineas);
+		return array("Estatus"=>"ok","TYPE"=>"Success","tabla"=>$tableName,"cabezeras"=>getRowName($tableName, $conexion),"cantidadDatos"=>1,"datos"=>$lineas,"index"=>$offset=null,"limit"=>$limit=null);
+	 }else{
+	 	return array("Estatus"=>"ERROR","TYPE"=>"El error es ni idea","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>null,"index"=>$offset=null,"limit"=>$limit=null);
+	 }
+	
+}
+function del_productos($tableName,$conexion,$opciones){
+	 $limpio=$opciones[2];
+     $datos[]= explode('||', $limpio);
+	 //var_dump($datos);
+	 for($i=0;$i<count($datos[0]);$i++){
+	 	$id=$datos[0][$i];
+	$sql="DELETE FROM productos WHERE idproductos=".$id.";";
+	//var_dump( $sql);
+		$conexion->Execute($sql);
+		echo $conexion->ErrorMsg();
+	 }
+}
 ?>

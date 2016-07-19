@@ -128,18 +128,17 @@
 			</div>
 		</div>
 		<div class="row">
-			<button class="btn btn-primary" onclick="buscar()">Buscar</button>
+			<button class="btn btn-primary" onclick="buscar()" id="buscarMain">Buscar</button>
 		</div>
 			</div>
 			<div class="container" id="">
 				<div class="row">
 					<div id="salida" class="col-md-10">
-						
 					</div>
 					<div class="col-md-2 hidden" id="microMenu">
 						<div class="row">
 							<div class="col-md-4">
-								<a href="#" onclick="save()"><img src="img/save.png" height="40px" width="40px" /></a>
+								<a href="#" onclick="save()"><img src="img/info.png" height="40px" width="40px" /></a>
 							</div>
 							<div class="col-md-4">
 								<a href="#" onclick="edit()"><img src="img/edit.ico" height="40px" width="40px"/></a>
@@ -150,6 +149,8 @@
 						</div>
 					</div>
 				</div>
+					<div class="hidden" id="insertarbtn"><button class="btn btn-primary" onclick="insertar()" id="insertarbtn1" value="insertar">insertar</button></div>
+					<div id="cargaMasiva"><button class="btn btn-success" onclick="#massmodal">Carga masiva</button></div>
 			</div>
 			<footer class="footer">
 				<div class="container-fluid text-center">

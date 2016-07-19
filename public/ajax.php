@@ -48,6 +48,20 @@ if((isset($_POST['operacion']) && isset($_POST['tabla']))||(isset($_GET['operaci
 					echo $resultado;
 }
 			break;
+		case 'chequearSerial':
+			$resultado=checkSerial($tabla,$db,$opciones);
+			$limpio=utf8ize($resultado);
+			echo json_encode($limpio);
+			break;
+		case 'checkcantidad':
+			$resultado=checkcantidad($tabla,$db,$opciones);
+			$limpio=utf8ize($resultado);
+			echo json_encode($limpio);
+			break;
+		case 'del_productos':
+			$resultado=del_productos($tabla,$db,$opciones);
+			
+			break;
 		default:
 			$temporal=array("Estatus"=>"ERROR","TYPE"=>"Operacion no encontrada||inicializada","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>NULL,"index"=>$offset=null,"limit"=>$limit=null);
 			echo json_encode($temporal);
