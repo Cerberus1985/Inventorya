@@ -4,10 +4,12 @@
 var _IsNotCat_;
 var _busqueda_;
 var _insertar_;
+var _selectData_;
 $(document).on("ready",main);
 function main(value){
 	$("#buscador").focus();
 	$('[data-toggle="tooltip"]').tooltip();
+	cargarSelect();
 	$("#buscador").on("keyup",function(){
 		$("#pregunta1").removeClass("hidden");
 	});
@@ -58,6 +60,7 @@ function chequeradios(){
 }
 function buscar(){
 	var selected1 =$('input[name=optionsRadios]:checked');
+	//console.log("estas entrando en buscar");
 	if(_busqueda_==''){
 		alert("elija una opcion");
 	}else{
@@ -102,7 +105,7 @@ function pedirDatos(datos,busqueda){
 		opciones+='nombre'+' LIKE "'+datos+'%"';
 		break;
 	case 'codigo_barra':
-		opciones+='codigo_barra='+datos;
+		opciones+="codigo_barra='"+datos+"'";
 		break;
 	case 'nombre':
 		opciones+='nombre'+' LIKE "'+datos+'%"';
@@ -389,7 +392,7 @@ function del(){
 	$("input:checkbox[name=opciones]:checked").each(function(){
     check.push($(this).val());
 });
-	console.log(check);
+	//console.log(check);
 	var confirmacion=confirm("Estas a punto de eliminar muchos item");
 	if(confirmacion){
 	var tabla='productos';
@@ -398,7 +401,7 @@ function del(){
 	for(var i=0;i<check.length;i++){
 		opciones+=check[i]+'||';
 	}
-	console.log(opciones);
+	//console.log(opciones);
 		$.ajaxSetup({
 		url:'ajax.php',
 		type:"POST",
@@ -413,4 +416,24 @@ function del(){
 	}else{
 		alert("cancelado con exito");
 	}
+}
+function cargarSelect()
+{
+	$.ajaxSetup
+	({
+		url:'ajax.php',
+		type:'POST',
+		dataType:'json',
+		data:{operacion:'select',tabla:'default',opciones:'0/0/'}
+	});
+	$.ajax
+	({
+		success:function(data)
+		{
+			if(data['Estatus']=='ok')
+			{
+				console.log(data);
+			}
+		}
+	});
 }

@@ -178,4 +178,18 @@ function del_productos($tableName,$conexion,$opciones){
 		echo $conexion->ErrorMsg();
 	 }
 }
+function select($tableName,$conexion,$opciones)
+{
+		$mysqli= new mysqli('localhost','root','12341234','inventorya');
+		$resultado=$mysqli->query("select * from ubicaciones");
+		var_dump($resultado->fetch_array());
+		echo $mysqli->error;
+		$sql="select nombre_ubicacion from `ubicaciones`;";
+		$resultado=$conexion->Execute($sql);
+		if($conexion->ErrorMsg()=='' && $resultado!='null')
+		{
+			$lineas[]=$resultado->fields;
+			var_dump($lineas);
+		}
+}
 ?>

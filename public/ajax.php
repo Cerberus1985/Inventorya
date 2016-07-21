@@ -62,6 +62,11 @@ if((isset($_POST['operacion']) && isset($_POST['tabla']))||(isset($_GET['operaci
 			$resultado=del_productos($tabla,$db,$opciones);
 			
 			break;
+		case'select':
+			/*$resultado=*/select($tabla,$db,$operacion);
+			//$limpio=utf8ize($resultado);
+			//echo json_encode($limpio);
+			break;
 		default:
 			$temporal=array("Estatus"=>"ERROR","TYPE"=>"Operacion no encontrada||inicializada","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>NULL,"index"=>$offset=null,"limit"=>$limit=null);
 			echo json_encode($temporal);
