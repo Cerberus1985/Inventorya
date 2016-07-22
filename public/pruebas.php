@@ -12,6 +12,9 @@ if (isset($_GET['cadena'])) {
 </form>
 <div id="salida">
 	<?php if(isset($respuesta)){
-		echo $respuesta;
+		//echo $respuesta;
+		$timestamp=1469190321-10800;
+		date_default_timezone_set('UTC');
+		echo date('H:i:s d-m-Y ', $timestamp);
 	}?>
 </div>

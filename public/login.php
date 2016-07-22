@@ -17,7 +17,7 @@
 		//var_dump($resultado);
 		if($resultado){
 			$datos[] = $resultado->fields;
-			var_dump($datos);
+			//var_dump($datos);
 			//var_dump($passwordlogin);
 			if($datos[0]['password']== $passwordlogin){
 			$_SESSION['loggin']='true';
@@ -25,6 +25,9 @@
 			$_SESSION['iduser']=$datos[0]['iduser'];
 			$_SESSION['estatus']=$datos[0]['estatus'];
 			$_SESSION['group']=$datos[0]['group'];
+			$_SESSION['last_log']=time();
+			$sql2="UPDATE user SET lastlogin=".time()." WHERE iduser=".$datos[0]['iduser'].";";
+			$db->Execute($sql2);
 			echo "ok";
 			header("Location: /" );
 			}else{

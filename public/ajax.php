@@ -2,6 +2,11 @@
 /*Este archovo contiene todo lo necesario para realizar las consultas que se realizen por javascript desde el navegador del usuario
  * todo lo envia codeado en json*/
 include '../core/core.php';
+//sleep(5);
+if(!isAjax()){
+	echo "GOOD LOOK MR PRESIDENT AND BYE BYE";
+	die();
+}
 $ADODB_FETCH_MODE = ADODB_FETCH_NUM;
 error_reporting(E_ALL);
 //$ADODB_CACHE_DIR = 'c:/tmp/';
@@ -63,9 +68,12 @@ if((isset($_POST['operacion']) && isset($_POST['tabla']))||(isset($_GET['operaci
 			
 			break;
 		case'select':
-			/*$resultado=*/select($tabla,$db,$operacion);
+			/*$resultado=*/select($tabla,$db,$opciones);
 			//$limpio=utf8ize($resultado);
 			//echo json_encode($limpio);
+			break;
+		case 'info_productos':
+			info_productos($tabla,$db,$opciones);
 			break;
 		default:
 			$temporal=array("Estatus"=>"ERROR","TYPE"=>"Operacion no encontrada||inicializada","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>NULL,"index"=>$offset=null,"limit"=>$limit=null);

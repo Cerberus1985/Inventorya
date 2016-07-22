@@ -11,10 +11,9 @@
 		<meta name="Invertorya" content="">
 		<meta name="Luis" content="luis@pipservice.com.ar">
 
-		<script   src="js/jquery-1.12.4.min.js" ></script>
+		
 		<link href="css/bootstrap-slate.min.css" rel="stylesheet" >
-		<script src="js/bootstrap.min.js" ></script>
-		<script src="js/index.js" ></script>
+		<link href="css/main.css" rel="stylesheet" >
 	</head>
 
 	<body>
@@ -30,7 +29,7 @@
 					<a href="loginOut.php" class="hidden" id="user-logout"><div>Logout</div></a>
 				</div>
 				<div class="col-md-4 col-xs-8">
-					<h2>INVENTORYA</h2>
+					<h2>INVENTORYA<div id="cargando" class="hidden">Inventa.....</div></h2>
 				</div>
 				<div class="col-md-4 col-xs-2">
 					<a href="#"><img src="img/config.png" height="50px" width="50px" /></a>	
@@ -160,6 +159,8 @@
 				</div>
 			</footer>
 			
-		
+		<script src="js/jquery-1.12.4.min.js" ></script>
+		<script src="js/bootstrap.min.js" ></script>
+		<script src="js/index.js" ></script>
 	</body>
 </html>

@@ -178,18 +178,47 @@ function del_productos($tableName,$conexion,$opciones){
 		echo $conexion->ErrorMsg();
 	 }
 }
+/*ATENCION!!!!!!!!!!! esta funcion no responde de la misma manera de las demas ya que entrega html como respuesta
+ * es medio complicado pero la voy a cambiar en breve*/
 function select($tableName,$conexion,$opciones)
 {
-		$mysqli= new mysqli('localhost','root','12341234','inventorya');
-		$resultado=$mysqli->query("select * from ubicaciones");
-		var_dump($resultado->fetch_array());
-		echo $mysqli->error;
-		$sql="select nombre_ubicacion from `ubicaciones`;";
-		$resultado=$conexion->Execute($sql);
-		if($conexion->ErrorMsg()=='' && $resultado!='null')
+	//var_dump($opciones);
+	switch ($opciones[2]) {
+		case 'nombre_ubicaciones':
+			$tabla='ubicaciones';
+			break;
+		case'nombre_categorias':
+			$tabla='categoria';
+			break;
+		default:
+			$tabla='';
+			break;
+	}
+	$selectes='<select id="ubica">';
+	$temporar=listar($tabla, $conexion);
+	for ($i=0; $i <$temporar['cantidadDatos'] ; $i++) { 
+		$selectes.='<option value="'.$temporar['datos'][$i][1].'">'.$temporar['datos'][$i][1].'</option>';
+	}
+	$selectes.='</select>';
+	echo $selectes;
+}
+function isAjax()
+{
+	/*chequea que la peticion sea AJAX caso contrario regresa false*/
+    if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+    	{return true;}
+    else
+    	{return false;}
+	
+}
+function info_productos($tabla,$db,$opciones)
+{
+		$limpio=$opciones[2];
+     	$datos[]= explode('||', $limpio);
+		for($i;$i<count($datos[0]);$i++)
 		{
-			$lineas[]=$resultado->fields;
-			var_dump($lineas);
+			$id=$datos[0][$i];
+			$sql="SELECT * FROM productos WHERE idproducto in ";
 		}
 }
 ?>

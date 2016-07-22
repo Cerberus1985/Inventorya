@@ -4,12 +4,21 @@
 var _IsNotCat_;
 var _busqueda_;
 var _insertar_;
-var _selectData_;
+var _selectDataCategorias_;
+var _selectDataUbicaciones_;
 $(document).on("ready",main);
 function main(value){
 	$("#buscador").focus();
-	$('[data-toggle="tooltip"]').tooltip();
+	//$('[data-toggle="tooltip"]').tooltip();
 	cargarSelect();
+	$(document).on("ajaxStart", function() {
+  					// this hace referencia a la div con la imagen. 
+  				//$(this).show();
+  				//console.log("inicia ");
+				}).on("ajaxStop", function() {
+  				//$(this).hide();
+  				//console.log("terminado");
+		});
 	$("#buscador").on("keyup",function(){
 		$("#pregunta1").removeClass("hidden");
 	});
@@ -144,7 +153,7 @@ $.ajax({
 				//console.log(info);
 				$.each(info,function(key,value){
 					if (regExpre.exec(value)){
-						html +='<td data-value='+value+'>'+'<a href="#" onclick="pedirCantidad(this)">'+value+'</a>'+'</td>';
+						html +='<td data-value='+value+'>'+'<a  onclick="pedirCantidad(this)">'+value+'</a>'+'</td>';
 					}else{
 						html +='<td data-value='+value+'>'+value+'</td>';
 						}
@@ -173,7 +182,7 @@ $.ajax({
 											html +='<td data-value='+value+'  >'+'<input type="text" placeholder='+value+' id="MIT2016" onblur="chequeaSerial(this.value)"></td>';
 										break;
 									case 4:
-											html +='<td data-value='+value+' onchage="cargarUbicacion()">'+'<select id="ubica">'+generarOption(value)+'</select></td>';
+											html +='<td data-value='+value+' onchage="cargarUbicacion()">'+generarOption(value)+'</td>';
 										break;
 									case 5:			
 										break;
@@ -185,13 +194,13 @@ $.ajax({
 						$.each(data['cabezeras'],function(key,value){
 								switch(key){
 									case 0:
-											html +='<td data-value='+value+' onchange="cargarCategoria()">'+'<select><option value="">'+value+'</option></select></td>';;
+											html +='<td data-value='+value+'>'+generarOption(value)+'</td>';;
 										break;
 									case 1:
-											html +='<td data-value='+value+'>'+'<input type="text" placeholder='+value+' id='+value+'></td>';
+											html +='<td data-value='+value+'>'+'<input type="text" placeholder='+value+' id='+value+' class="input-lg"></td>';
 										break;
 									case 2:
-											html +='<td data-value='+value+' onkeyup="chequeaSap(this)">'+'<input type="text" placeholder='+value+' id='+value+'></td>';
+											html +='<td data-value='+value+' onblur="chequeaSap(this.value)">'+'<input type="text" placeholder='+value+' id='+value+' class="input-lg"></td>';
 										break;
 									case 3:
 											//html +='<td data-value='+value+'onkeyup="chequeaSerial">'+'<input type="text" placeholder='+value+' id='+value+'></td>';
@@ -270,7 +279,11 @@ function chequearUbicacion(){
 function generarOption(info){
 	switch (info){
 		case 'nombre_ubicacion':
-			return '<option value=NETACOM>NETACOM </option>'+'<option value="somewhere">somewhere</option>';
+			return _selectDataUbicaciones_;
+			console.log(_selectDataUbicaciones_);
+		break;
+		case 'nombre_categoria':
+			return _selectDataCategorias_;
 		break;
 	}
 }
@@ -368,6 +381,8 @@ function insertar(){
 }
 function pedirCantidad(info){
 	//console.log(info.innerHTML);
+	//this.preventDefault();
+	//e.preventDefault();
 	var tabla='vista_cantidad';
 	var operacion="checkcantidad";
 	var opciones="0/0/";
@@ -380,10 +395,30 @@ function pedirCantidad(info){
 	});
 	$.ajax({
 		success:function(data){
-			var placeholder=$("#MIT2016").attr("placeholder");
-			placeholder+=' '+data['datos'][0];
-			$("#MIT2016").attr("placeholder",placeholder);
-			console.log(data);
+			if(!$("#info").length){
+				$('#salida').append('<div class="centrar info" id="info"></div>');
+			}
+			if(data['datos'][0][2]=="undefined"){
+				descripcion="No existe todavia cargado este articulo";
+				cantidad="0";
+				unidad="u";
+				selecte=_selectDataUbicaciones_;
+				
+			}else{
+			var descripcion=data['datos'][0][2];
+			var cantidad=data['datos'][0][0];
+			var unidad=data['datos'][0][1];
+			var selecte=_selectDataUbicaciones_;
+			}
+			var datos="<h1 class='center'>"+descripcion+"</h1>";
+			datos+="Existen:"+cantidad+unidad+"</br>";
+			datos+="Desea asignar una cantidad?</br>";
+			datos+="<input type='text' onblur='' placeholder='Cantidad'></br>";
+			datos+=selecte+"</br>";
+			datos+="<button class='btn btn-primary'>enviar</button>";
+			datos+='<button class="btn btn-primary" onclick="removeInfo()">cancelar</button>';
+			$("#info").html(datos);
+			
 		}
 	});
 }
@@ -419,21 +454,72 @@ function del(){
 }
 function cargarSelect()
 {
+	/*carga los datos para el select categorias*/
 	$.ajaxSetup
 	({
 		url:'ajax.php',
 		type:'POST',
-		dataType:'json',
-		data:{operacion:'select',tabla:'default',opciones:'0/0/'}
+		data:{operacion:'select',tabla:'default',opciones:'0/0/nombre_categorias'}
 	});
 	$.ajax
 	({
 		success:function(data)
 		{
-			if(data['Estatus']=='ok')
-			{
-				console.log(data);
-			}
+				_selectDataCategorias_=data;
+				//console.log(data);
 		}
 	});
+	/*FIN*/
+	/*carga los datos para el select ubicaciones*/
+	$.ajaxSetup
+	({
+		url:'ajax.php',
+		type:'POST',
+		data:{operacion:'select',tabla:'default',opciones:'0/0/nombre_ubicaciones'}
+	});
+	$.ajax
+	({
+		success:function(data)
+		{
+			
+				_selectDataUbicaciones_=data;
+				//console.log(data);
+			
+		}
+	});
+	/*FIN*/
+}
+function removeInfo(){
+	$("#info").remove();
+}
+function info()
+{
+	var check=[];
+	$("input:checkbox[name=opciones]:checked").each(function(){
+    check.push($(this).val());
+});
+if(check.length>0)
+	{
+		var tabla='productos';
+		var operacion="info_productos";
+		var opciones="0/0/";
+		for(var i=0;i<check.length;i++)
+			{
+				opciones+=check[i]+'||';
+			}
+		$.ajaxSetup
+			({
+				url:'ajax.php',
+				type:"POST",
+				dataType:'json',
+				data:{operacion:operacion,tabla:tabla,opciones:opciones},
+			});
+		$.ajax
+			({
+				success:function()
+					{
+						
+					}
+			});
+	}
 }
