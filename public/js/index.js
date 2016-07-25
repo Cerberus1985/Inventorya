@@ -13,10 +13,10 @@ function main(value){
 	cargarSelect();
 	$(document).on("ajaxStart", function() {
   					// this hace referencia a la div con la imagen. 
-  				//$(this).show();
+  				$('#salida').append('<div class="centrar positionfixed" id="iconload"><img src="img/loading.gif" height="300" width="400"></div>');
   				//console.log("inicia ");
 				}).on("ajaxStop", function() {
-  				//$(this).hide();
+  				$("#iconload").remove();
   				//console.log("terminado");
 		});
 	$("#buscador").on("keyup",function(){
