@@ -137,7 +137,7 @@
 					<div class="col-md-2 hidden" id="microMenu">
 						<div class="row">
 							<div class="col-md-4">
-								<a href="#" onclick="save()"><img src="img/info.png" height="40px" width="40px" /></a>
+								<a href="#" onclick="info()"><img src="img/info.png" height="40px" width="40px" /></a>
 							</div>
 							<div class="col-md-4">
 								<a href="#" onclick="edit()"><img src="img/edit.ico" height="40px" width="40px"/></a>
