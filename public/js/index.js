@@ -523,3 +523,8 @@ if(check.length>0)
 			});
 	}
 }
+/*Esta funcion pedira la cantidad actual atravez de chequea cantidad y enviara la nueva cantidad y ubicacion */
+function updateCantidad()
+{
+	
+}
