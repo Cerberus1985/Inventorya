@@ -215,10 +215,25 @@ function info_productos($tabla,$db,$opciones)
 {
 		$limpio=$opciones[2];
      	$datos[]= explode('||', $limpio);
-		for($i;$i<count($datos[0]);$i++)
+		for($i=0;$i<count($datos[0]);$i++)
 		{
 			$id=$datos[0][$i];
-			$sql="SELECT * FROM productos WHERE idproducto in ";
+			$sql="SELECT * FROM productos_log WHERE idproducto=$id;";
+			//echo $sql."</br>";
+			$respuesta=$db->Execute($sql);
+			if($db->ErrorMsg()=='')
+			{
+				while(!$respuesta->EOF)
+				{
+					$informacion[]=$respuesta->fields;
+					$respuesta->MoveNext();
+				}
+				var_dump($informacion);
+				echo "</br>";
+			}else
+			{
+				echo $db->ErrorMsg();
+			}
 		}
 }
 ?>
