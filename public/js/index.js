@@ -72,7 +72,9 @@ function buscar(){
 	//console.log("estas entrando en buscar");
 	if(_busqueda_==''){
 		alert("elija una opcion");
+		console.log("algo raro");
 	}else{
+			console.log("algo comun");
 			var busqueda = $('#buscador').val();
 			$('#pregunta2usuario').addClass("hidden");
 			$('#pregunta2deposito').addClass("hidden");
@@ -373,8 +375,7 @@ function insertar(){
 	});
 	$.ajax({
 		success:function(data){
-			$("#salida").empty();
-			pedirDatos("","descripcion");
+				console.log("acabo de pasar por function DEL");
 		}
 	});
 	
@@ -445,7 +446,8 @@ function del(){
 	});
 		$.ajax({
 		success:function(data){
-			$('#buscarMain').trigger('click');
+			console.log("acabo de pasar por function DEL");
+			buscar();
 		}
 	});
 	}else{
@@ -518,7 +520,7 @@ if(check.length>0)
 			({
 				success:function()
 					{
-						
+						console.log("acabo de pasar por function info");
 					}
 			});
 	}
