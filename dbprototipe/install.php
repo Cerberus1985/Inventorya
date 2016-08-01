@@ -1,3 +1,9 @@
+<?php 
+if(file_exists("../config/config.ini"))
+{
+	die("ya esta configurado no se puede configurar de nuevo");
+}
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -60,7 +66,7 @@ if(isset($_POST['summit']))
 {
 	$script_path=realpath(dirname(__FILE__));
 	$user=($_POST['mysqluser']!="") ? $_POST['mysqluser']:"root";
-	$pass=($_POST['mysqlpass']!="") ? $_POST['mysqlpass']:"12341234";
+	$pass=($_POST['mysqlpass']!="") ? $_POST['mysqlpass']:"";
 	$dbName=($_POST['dbname']!="") ? $_POST['dbname']:"inventorya";
 	$dbhost=($_POST['dbhost']!="") ? $_POST['dbhost']:"127.0.0.1";
 	try{
@@ -69,14 +75,22 @@ if(isset($_POST['summit']))
 		echo "hola";
 	}
 	
-	var_dump(run_sql_file("test.sql",$enlace));
+	$resultado=run_sql_file("test.sql",$enlace);
+	if($resultado["general"]==TRUE)
+	{
+		$fileIniMg= new Inidriver();
+		$arrayIn=$fileIniMg->getIniFile("../config/config.template.ini");
+		$arrayIn["Base_Datos_Config"]["db.user"]=$user;
+		$arrayIn["Base_Datos_Config"]["db.password"]=$pass;
+		$arrayIn["Base_Datos_Config"]["db.host"]=$dbName;
+		$arrayIn["Base_Datos_Config"]["db.dbname"]=$dbName;
+		$fileIniMg->SetiniFile($arrayIn,"../config/config.ini");
+	}
 }
 restore_error_handler();
-function warning_handler($errno, $errstr,$errfile, $errline) { 
-//echo $errno.PHP_EOL."String=".$errstr."#".$errline."</br>";
+function warning_handler($errno, $errstr,$errfile, $errline) {
+	echo "revisa los datos sumistrados";
+	die();
 }
-$fileIniMg= new Inidriver();
-$arrayIn=$fileIniMg->getIniFile();
-$arrayIn["Base_Datos_Config"]["db.user"]="ramon esteganoes";
-$fileIniMg->SetiniFile($arrayIn,"pruebas.ini");
+
 ?>
