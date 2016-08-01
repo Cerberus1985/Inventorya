@@ -132,6 +132,7 @@ function verifica($cadena){
 		return $cadena;
 	}
  }
+/*Chequea que el serial no este en la base de datos si se encuentra y en caso que  los encuentre regresa error*/
 function checkSerial($tableName,$conexion,$opciones=NULL)
 {
 	$codigo_barra =verifica($opciones[2]);
@@ -144,6 +145,7 @@ function checkSerial($tableName,$conexion,$opciones=NULL)
 	 	return array("Estatus"=>"ok","TYPE"=>"Success","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>null,"index"=>$offset=null,"limit"=>$limit=null);
 	 }
 }
+/*Funcion solo con el propocito de mostrar el funcionamiento de la verificacion para evitar el sql inyection*/
 function verificaDebug($cadena){
 	 $regular="/^NT+|^nt+|^Nt+|^nT+/";
 	if(preg_match($regular, $cadena)){
@@ -152,6 +154,7 @@ function verificaDebug($cadena){
 		return $cadena;
 	}
 }
+/*chequea la cantidad de los productos no serializados */
 function checkcantidad($tableName,$conexion,$opciones)
 {	$sap=$opciones[2];
 	$sql="Select cantidad,unidad,nombre from vista_cantidad where sap='$sap';";
@@ -166,6 +169,8 @@ function checkcantidad($tableName,$conexion,$opciones)
 	 }
 	
 }
+/*Esta funcion borra todos los productos pasados por las opciones estando separados por || entre cada id como respuesta si existieran errores
+ * regresa eso no son tomados en cuenta por la aplicacion principal ajax por que no es respuesta json standar*/
 function del_productos($tableName,$conexion,$opciones){
 	 $limpio=$opciones[2];
      $datos[]= explode('||', $limpio);
@@ -211,10 +216,15 @@ function isAjax()
     	{return false;}
 	
 }
+/*Envia la informacion de los productos en una tabla lo saca del log por lo cual todavia esta en investigacion la manera
+ * en la se mostrara la informacion
+ * */
 function info_productos($tabla,$db,$opciones)
 {
 		$limpio=$opciones[2];
      	$datos[]= explode('||', $limpio);
+		//var_dump($datos);
+		$tabla="<table><thead><tr><th>campo_1</th><th>Campo_2</th><th>campo_3</th><th>campo_4</th><th>campo_5</th><th>Campo_6</th></tr><tbody>";
 		for($i=0;$i<count($datos[0]);$i++)
 		{
 			$id=$datos[0][$i];
@@ -223,17 +233,67 @@ function info_productos($tabla,$db,$opciones)
 			$respuesta=$db->Execute($sql);
 			if($db->ErrorMsg()=='')
 			{
+				$z=0;
 				while(!$respuesta->EOF)
 				{
+					
+					$tabla.="<tr>";
 					$informacion[]=$respuesta->fields;
+					for($X=0;$X<count($informacion[$z]);$X++)
+					{
+						$tabla.="<td>".$informacion[$z][$X]."</td>";
+					}
+					$tabla.="</tr>";
+					$z++;
 					$respuesta->MoveNext();
 				}
-				var_dump($informacion);
-				echo "</br>";
+				//var_dump($informacion);
+				$tabla.="</tbody></table>";
+				unset($informacion);
+				echo $tabla;
 			}else
 			{
 				echo $db->ErrorMsg();
 			}
 		}
+}
+function startsWith($haystack, $needle)
+{
+	    $length = strlen($needle);
+	    return (substr($haystack, 0, $length) === $needle);
+}
+function run_sql_file($location,$link)
+{/*Permite ejecutar todas las sentencias SQL cargadas en un archivo sql
+ * requiere un link mysqli y una localizacion del archivo*/
+	    //load file
+	    $commands = file_get_contents($location);
+	    //delete comments
+	    $lines = explode("\n",$commands);
+	    $commands = '';
+	    foreach($lines as $line){
+	        $line = trim($line);
+	        if( $line && !startsWith($line,'--') ){
+	            $commands .= $line . "\n";
+	        }
+	    }
+	
+	    //convert to array
+	    $commands = explode(";", $commands);
+	
+	    //run commands
+	    $total = $success = 0;
+	    foreach($commands as $command){
+	        if(trim($command)){
+	            $success += (@mysqli_query($link,$command)==false ? 0 : 1);
+	            $total += 1;
+	        }
+	    }
+		mysqli_close($link);
+		    //return number of successful queries and total number of queries found more one general status
+	    return array(
+	        "success" => $success,
+	        "total" => $total,
+	        "general"=>($total==$success)?TRUE:FALSE
+	    );
 }
 ?>
