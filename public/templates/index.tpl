@@ -11,7 +11,7 @@
 		<meta name="Invertorya" content="">
 		<meta name="Luis" content="luis@pipservice.com.ar">
 
-		
+		<link rel="icon" type="image/png" href="img/icon2.png" />
 		<link href="css/bootstrap-slate.min.css" rel="stylesheet" >
 		<link href="css/main.css" rel="stylesheet" >
 	</head>
@@ -29,7 +29,7 @@
 					<a href="loginOut.php" class="hidden" id="user-logout"><div>Logout</div></a>
 				</div>
 				<div class="col-md-4 col-xs-8">
-					<h2>INVENTORYA<div id="cargando" class="hidden">Inventa.....</div></h2>
+					<img src="img/MainLogo2.png" width="300px" heigt="200px">
 				</div>
 				<div class="col-md-4 col-xs-2">
 					<a href="#"><img src="img/config.png" height="50px" width="50px" /></a>	
