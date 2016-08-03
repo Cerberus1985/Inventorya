@@ -61,7 +61,7 @@ if(file_exists("../config/config.ini"))
 </html>
 <?php
 include '../core/core.php';
-set_error_handler("warning_handler", E_WARNING);
+//set_error_handler("warning_handler", E_WARNING);
 if(isset($_POST['summit']))
 {
 	$script_path=realpath(dirname(__FILE__));
@@ -78,11 +78,11 @@ if(isset($_POST['summit']))
 	$resultado=run_sql_file("test.sql",$enlace);
 	if($resultado["general"]==TRUE)
 	{
-		$fileIniMg= new Inidriver();
-		$arrayIn=$fileIniMg->getIniFile("../config/config.template.ini");
+		$fileIniMg= new Inidriver("../config/config.template.ini");
+		$arrayIn=$fileIniMg->getIniFile();
 		$arrayIn["Base_Datos_Config"]["db.user"]=$user;
 		$arrayIn["Base_Datos_Config"]["db.password"]=$pass;
-		$arrayIn["Base_Datos_Config"]["db.host"]=$dbName;
+		$arrayIn["Base_Datos_Config"]["db.host"]=$dbhost;
 		$arrayIn["Base_Datos_Config"]["db.dbname"]=$dbName;
 		$fileIniMg->SetiniFile($arrayIn,"../config/config.ini");
 	}
