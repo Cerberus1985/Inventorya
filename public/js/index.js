@@ -72,9 +72,9 @@ function buscar(){
 	//console.log("estas entrando en buscar");
 	if(_busqueda_==''){
 		alert("elija una opcion");
-		console.log("algo raro");
+		//console.log("algo raro");
 	}else{
-			console.log("algo comun");
+			//console.log("algo comun");
 			var busqueda = $('#buscador').val();
 			$('#pregunta2usuario').addClass("hidden");
 			$('#pregunta2deposito').addClass("hidden");
@@ -282,7 +282,7 @@ function generarOption(info){
 	switch (info){
 		case 'nombre_ubicacion':
 			return _selectDataUbicaciones_;
-			console.log(_selectDataUbicaciones_);
+			//console.log(_selectDataUbicaciones_);
 		break;
 		case 'nombre_categoria':
 			return _selectDataCategorias_;
@@ -513,14 +513,15 @@ if(check.length>0)
 			({
 				url:'ajax.php',
 				type:"POST",
-				dataType:'json',
+				//dataType:'json',
 				data:{operacion:operacion,tabla:tabla,opciones:opciones},
 			});
 		$.ajax
 			({
-				success:function()
+				success:function(datos)
 					{
-						console.log("acabo de pasar por function info");
+						$("#salida").append('<div class="centrar positionfixed" id="infop"></div>');
+						$("#infop").html(datos);
 					}
 			});
 	}
