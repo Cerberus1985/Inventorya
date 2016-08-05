@@ -7,12 +7,12 @@ terminado del todo pero ya es posible recorrer,cargar y editar articulos con alg
 Descargar un todo en uno te ayudara bastante para este caso te dejo algunos muy buenos</p>
 <ul>
 <li>
-WAMP--(windows Apache Mysql Php puedes descargarlo desde AQUI).
+WAMP--(windows Apache Mysql Php puedes descargarlo desde <a href="http://www.wampserver.com/en/">AQUI</a>).
 </li>
 <li>
-LAMP--(Linux Apache Mysql Php puedes descargarlo desde AQUI).
+LAMP--(Linux Apache Mysql Php puedes descargarlo desde <a href="https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-debian">AQUI</a>).
 </li>
 <li>
-MAMP--(Mac Apache Mysql Php puedes descargarlo de AQUI).
+MAMP--(Mac Apache Mysql Php puedes descargarlo de <a href="https://www.mamp.info/en/downloads/">AQUI</a>).
 </li>
 </ul>
