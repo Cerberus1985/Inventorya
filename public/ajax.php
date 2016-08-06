@@ -49,9 +49,12 @@ if((isset($_POST['operacion']) && isset($_POST['tabla']))||(isset($_GET['operaci
 			break;
 		case 'insertar':
 			$resultado=insertar($tabla,$db,$opciones);
-			if($resultado){
-					echo $resultado;
-}
+			if($resultado=="ERROR")
+			{
+				echo "ERROR";
+			}else {
+				echo "OK";
+			}
 			break;
 		case 'chequearSerial':
 			$resultado=checkSerial($tabla,$db,$opciones);
@@ -65,7 +68,7 @@ if((isset($_POST['operacion']) && isset($_POST['tabla']))||(isset($_GET['operaci
 			break;
 		case 'del_productos':
 			$resultado=del_productos($tabla,$db,$opciones);
-			
+
 			break;
 		case'select':
 			/*$resultado=*/select($tabla,$db,$opciones);

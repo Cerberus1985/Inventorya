@@ -13,7 +13,7 @@ function listar($tableName,$conexion,$option=NULL){
 			$limit = $option[1];
 			$result = $conexion->selectLimit($slq,$limit,$offset);
 	}
-	
+
 	if ($result){
 			while(!$result->EOF){
 			$lineas[] = $result->fields;
@@ -23,7 +23,7 @@ function listar($tableName,$conexion,$option=NULL){
 	return $retorno;}else{
 							return array("Estatus"=>"ERROR","TYPE"=>"Tabla No encontrada","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>NULL,"index"=>$offset=null,"limit"=>$limit=null);
 						}
-	
+
 }
 /*Esta funcion busca dependiendo de las opciones que se le envian si no se le envian opciones entonces actua igual que listar
  * las opciones son en formato SQL'ERAN EN FORMATO SQL AHORA ES STRING CON LA BUSQUEDA A SECAS PERO REQUIERE EL NOMBRE DEL CAMPO' */
@@ -34,7 +34,7 @@ function buscar($tableName,$conexion,$datos=''){
 		if(count($tmp>1)){
 			var_dump($tmp);
 		} ALERTA SPOILER SE VIENE NEGRAAAAAASS*/
-		$opciones= verifica($datos[2]);
+		$opciones= $datos[2];
 		$offset = null;
 		$limit = null;
 		$slq="SELECT * FROM $tableName WHERE $opciones;";
@@ -51,6 +51,7 @@ function buscar($tableName,$conexion,$datos=''){
 				$opciones ="";
 			}
 			$slq="SELECT * FROM $tableName where $opciones;";
+      echo $slq;
 			$result = $conexion->selectLimit($slq,$limit,$offset);
 	}
 
@@ -60,7 +61,7 @@ function buscar($tableName,$conexion,$datos=''){
 			$result->MoveNext();
 			}
 	//var_dump($lineas);
-			return array("Estatus"=>"ok","TYPE"=>"Success","tabla"=>$tableName,"cabezeras"=>getRowName($tableName, $conexion),"cantidadDatos"=>count($lineas),"datos"=>$lineas,"index"=>$offset,"limit"=>$limit); 
+			return array("Estatus"=>"ok","TYPE"=>"Success","tabla"=>$tableName,"cabezeras"=>getRowName($tableName, $conexion),"cantidadDatos"=>count($lineas),"datos"=>$lineas,"index"=>$offset,"limit"=>$limit);
 				}else{
 							return array("Estatus"=>"ERROR","TYPE"=>"opciones de busqueda incorrectas","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>null,"index"=>$offset=null,"limit"=>$limit=null);
 									}
@@ -90,7 +91,7 @@ function getRowName($tableName,$conexion)
 	 $resultado->close();
 	 $resultado=NULL;
 	 return $aRet;
-	 
+
   }
 function categorias($tabla,$conexion,$opciones)
  {
@@ -106,7 +107,7 @@ function categorias($tabla,$conexion,$opciones)
  }
 function insertar($tabla,$conexion,$opciones)
  {
- 	/* Los datos se envian en opciones siendo la secuencia la siguiente 
+ 	/* Los datos se envian en opciones siendo la secuencia la siguiente
 	 * 0/0/(puesto para retrocompatibilidad con las otras funciones)
 	 * PrimerValor(sap)||
 	 * SegundoValor(codigoBarras||cantidad)||
@@ -122,7 +123,15 @@ function insertar($tabla,$conexion,$opciones)
 	 $informacion=verifica($datos[0][3]);
      $sql="CALL insertarp ('$sap','$codigoBarras','$userid','$ubicacion','$informacion');";
 	 $resultado=$conexion->Execute($sql);
-	 var_dump($resultado);
+   //var_dump($conexion->Affected_Rows());
+   if(!gettype($resultado)=="")
+   {
+     return "OK";
+   }else {
+     return "ERROR";
+   }
+
+	 //var_dump($resultado);
  }
 function verifica($cadena){
  	$regular="/[-@+\\\]/";
@@ -167,7 +176,7 @@ function checkcantidad($tableName,$conexion,$opciones)
 	 }else{
 	 	return array("Estatus"=>"ERROR","TYPE"=>"El error es ni idea","tabla"=>$tableName,"cabezeras"=>array("Estatus","Descripcion"),"cantidadDatos"=>0,"datos"=>null,"index"=>$offset=null,"limit"=>$limit=null);
 	 }
-	
+
 }
 /*Esta funcion borra todos los productos pasados por las opciones estando separados por || entre cada id como respuesta si existieran errores
  * regresa eso no son tomados en cuenta por la aplicacion principal ajax por que no es respuesta json standar*/
@@ -201,7 +210,7 @@ function select($tableName,$conexion,$opciones)
 	}
 	$selectes='<select id="ubica">';
 	$temporar=listar($tabla, $conexion);
-	for ($i=0; $i <$temporar['cantidadDatos'] ; $i++) { 
+	for ($i=0; $i <$temporar['cantidadDatos'] ; $i++) {
 		$selectes.='<option value="'.$temporar['datos'][$i][1].'">'.$temporar['datos'][$i][1].'</option>';
 	}
 	$selectes.='</select>';
@@ -214,7 +223,7 @@ function isAjax()
     	{return true;}
     else
     	{return false;}
-	
+
 }
 /*Envia la informacion de los productos en una tabla lo saca del log por lo cual todavia esta en investigacion la manera
  * en la se mostrara la informacion
@@ -236,7 +245,7 @@ function info_productos($tabla,$db,$opciones)
 				$z=0;
 				while(!$respuesta->EOF)
 				{
-					
+
 					$tabla.="<tr>";
 					$informacion[]=$respuesta->fields;
 					for($X=0;$X<count($informacion[$z]);$X++)
@@ -276,10 +285,10 @@ function run_sql_file($location,$link)
 	            $commands .= $line . "\n";
 	        }
 	    }
-	
+
 	    //convert to array
 	    $commands = explode(";", $commands);
-	
+
 	    //run commands
 	    $total = $success = 0;
 	    foreach($commands as $command){

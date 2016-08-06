@@ -12,7 +12,7 @@ function main(value){
 	//$('[data-toggle="tooltip"]').tooltip();
 	cargarSelect();
 	$(document).on("ajaxStart", function() {
-  					// this hace referencia a la div con la imagen. 
+  					// this hace referencia a la div con la imagen.
   				$('#salida').append('<div class="centrar positionfixed" id="iconload"><img src="img/loading.gif" height="300" width="400"></div>');
   				//console.log("inicia ");
 				}).on("ajaxStop", function() {
@@ -83,16 +83,16 @@ function buscar(){
 			pedirDatos(busqueda,_busqueda_);
 			$("#microMenu").removeClass("hidden");
 			busqueda='';
-			
+
 	}
 }
 /* En esta funcion se piden los datos del server este envia todo en un formato estandar json y los muestra en formato HTML TABLE sobre un id salida
- 
+
  * {"Estatus":"ok||ERROR","TYPE":"Success||Error description","tabla":"TableName","cabezeras":["string1","string2","...."],"cantidadDatos":1,"datos":[["1","100207416","ANTENA","11111111111","netacom"]],"index":null,"limit":null}
- * la manera de enviar los datos es la siguiente 
+ * la manera de enviar los datos es la siguiente
  * {operacion:operacion,tabla:tableName,opciones:opciones(index(int)/limit(int)/namecampo='busqueda'(string))}
  * pedirDatos(datos=searchUser,busqueda=campoDetabla)
- * 
+ *
  * */
 function pedirDatos(datos,busqueda){
 	var operacion = 'buscar';
@@ -111,21 +111,21 @@ function pedirDatos(datos,busqueda){
 	case 'sap':
 		opciones+="sap='"+datos+"'";
 		break;
-		
-	case 'descripcion':	
-		opciones+='nombre'+' LIKE "'+datos+'%"';
+
+	case 'descripcion':
+		opciones+='nombre'+' LIKE "'+datos+'%" ORDER BY idproductos ASC';
 		break;
 	case 'codigo_barra':
 		opciones+="codigo_barra='"+datos+"'";
 		break;
 	case 'nombre':
-		opciones+='nombre'+' LIKE "'+datos+'%"';
+		opciones+='nombre'+' LIKE "'+datos+'%" ORDER BY idproductos ASC';
 		break;
 	case 'telefono':
-		opciones+='telefono'+' LIKE "'+datos+'%"';
+		opciones+='telefono'+' LIKE "'+datos+'%" ORDER BY idproductos ASC';
 		break;
 	case 'sapS':
-		opciones+='nombre'+' LIKE "'+datos+'%"';
+		opciones+='nombre'+' LIKE "'+datos+'%" ORDER BY idproductos ASC';
 		break;
 		}
 	$.ajaxSetup({
@@ -141,7 +141,7 @@ $.ajax({
 		success:function(data){
 			var salida = $("#salida");
 			var regExpre=/^NT+|^nt+|^Nt+|^nT+/;
-			if(data['Estatus']=='ok'){//chequea que estatus sea OK y no ERROR 
+			if(data['Estatus']=='ok'){//chequea que estatus sea OK y no ERROR
 				var html ='<table class="table"><thead><tr>';
 				$.each(data['cabezeras'],function(key,value){
 					html +='<td data-value='+value+'>'+value+'</td>';
@@ -186,7 +186,7 @@ $.ajax({
 									case 4:
 											html +='<td data-value='+value+' onchage="cargarUbicacion()">'+generarOption(value)+'</td>';
 										break;
-									case 5:			
+									case 5:
 										break;
 								}
 								//html +='<td data-value='+value+'>'+'<input type="text" placeholder='+value+' id='+value+'></td>';
@@ -222,7 +222,7 @@ $.ajax({
 				//console.log(html);
 				}
 				salida.html(html);
-				
+
 			}
 		}
 	});
@@ -276,7 +276,7 @@ function chequearSap(algo){
 	});
 }
 function chequearUbicacion(){
-	
+
 }
 function generarOption(info){
 	switch (info){
@@ -332,7 +332,7 @@ function chequeaCantidad(algo){
 		boton.addClass("hidden");
 		imgchk.attr("src","img/warning.png");
 		return false;
-		
+
 	}
 	if(regExpre.exec(algo)){
 		var boton=$("#insertarbtn");
@@ -365,20 +365,30 @@ function insertar(){
 		opciones+=ubicacion+"||";
 		opciones+=informacion+"||";
 
-		
+
 	}
 		$.ajaxSetup({
 		url:'ajax.php',
 		type:"POST",
-		dataType:'json',
+		dataType:'html',
 		data:{operacion:operacion,tabla:tabla,opciones:opciones},
 	});
 	$.ajax({
 		success:function(data){
-				console.log("acabo de pasar por function DEL");
+		console.log(data)
+					if(data=="OK")
+					{ console.log("respuesta ok del server");
+						buscar();
+					}else {
+						console.log("respuesta ERROR del server");
+						var boton=$("#insertarbtn");
+						var imgchk=$("#imgchk");
+						imgchk.attr("src","img/error.png");
+						boton.addClass("hidden");
+					}
 		}
 	});
-	
+
 }
 function pedirCantidad(info){
 	//console.log(info.innerHTML);
@@ -404,7 +414,7 @@ function pedirCantidad(info){
 				cantidad="0";
 				unidad="u";
 				selecte=_selectDataUbicaciones_;
-				
+
 			}else{
 			var descripcion=data['datos'][0][2];
 			var cantidad=data['datos'][0][0];
@@ -419,7 +429,7 @@ function pedirCantidad(info){
 			datos+="<button class='btn btn-primary'>enviar</button>";
 			datos+='<button class="btn btn-primary" onclick="removeInfo()">cancelar</button>';
 			$("#info").html(datos);
-			
+
 		}
 	});
 }
@@ -441,7 +451,7 @@ function del(){
 		$.ajaxSetup({
 		url:'ajax.php',
 		type:"POST",
-		dataType:'json',
+		dataType:'html',
 		data:{operacion:operacion,tabla:tabla,opciones:opciones},
 	});
 		$.ajax({
@@ -483,10 +493,10 @@ function cargarSelect()
 	({
 		success:function(data)
 		{
-			
+
 				_selectDataUbicaciones_=data;
 				//console.log(data);
-			
+
 		}
 	});
 	/*FIN*/
@@ -529,5 +539,5 @@ if(check.length>0)
 /*Esta funcion pedira la cantidad actual atravez de chequea cantidad y enviara la nueva cantidad y ubicacion */
 function updateCantidad()
 {
-	
+
 }
